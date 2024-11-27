@@ -1,0 +1,65 @@
+name: Feature to Dev CI/CD
+
+on:
+  push:
+    branches:
+      - dev  # Trigger when changes are pushed to dev branch
+
+jobs:
+  build-and-test:
+    name: Build and Test Project
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js (if you use Node.js for backend or frontend)
+      - name: Set up Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Install dependencies for both frontend and backend
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      # Step 4: Run Unit Tests for both backend and frontend
+      - name: Run Backend Unit Tests
+        working-directory: ./backend
+        run: npm test
+
+      - name: Run Frontend Unit Tests
+        working-directory: ./frontend
+        run: npm test
+
+  auto-merge-to-main:
+    name: Auto Merge Dev into Main
+    needs: build-and-test
+    if: success()  # Trigger this only if the previous job succeeded
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Git credentials
+      - name: Configure Git for auto-merge
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+
+      # Step 3: Merge dev into main
+      - name: Merge dev into main
+        run: |
+          git fetch origin main
+          git checkout main
+          git merge dev --no-ff -m "Merge dev into main after feature branch tests"
+          git push origin main

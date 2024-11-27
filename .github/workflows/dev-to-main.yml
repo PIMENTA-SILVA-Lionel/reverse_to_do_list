@@ -1,0 +1,68 @@
+name: Dev to Main CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Trigger when changes are pushed to the main branch
+
+jobs:
+  build-and-test:
+    name: Build, Test, and Run E2E
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js for both frontend and backend
+      - name: Set up Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      # Step 3: Install dependencies for frontend and backend
+      - name: Install Backend Dependencies
+        working-directory: ./backend
+        run: npm install
+
+      - name: Install Frontend Dependencies
+        working-directory: ./frontend
+        run: npm install
+
+      # Step 4: Run Unit Tests for both frontend and backend
+      - name: Run Backend Unit Tests
+        working-directory: ./backend
+        run: npm test
+
+      - name: Run Frontend Unit Tests
+        working-directory: ./frontend
+        run: npm test
+
+      # Step 5: Run End-to-End Tests (E2E)
+      - name: Run E2E Tests
+        run: npm run e2e  # Assuming e2e tests are defined in your package.json
+
+  build-and-push-docker:
+    name: Build and Push Docker Images
+    needs: build-and-test
+    if: success()  # Trigger this only if the tests pass
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Log in to Docker Hub (public Docker repository)
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # Step 3: Build Docker images using docker-compose
+      - name: Build and Push Docker Images
+        run: |
+          docker-compose build
+          docker-compose push
