@@ -15,8 +15,13 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js for both frontend and backend
+      # Step 2: Set up Node.js (for both backend and frontend)
       - name: Set up Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Set up Node.js for Frontend
         uses: actions/setup-node@v3
         with:
           node-version: '16'
@@ -30,7 +35,11 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      # Step 4: Run Unit Tests for both frontend and backend
+      - name: Install e2e Dependencies
+        working-directory: ./e2e-tests
+        run: npm install
+
+      # Step 4: Run Unit Tests for both backend and frontend
       - name: Run Backend Unit Tests
         working-directory: ./backend
         run: npm test
@@ -41,7 +50,8 @@ jobs:
 
       # Step 5: Run End-to-End Tests (E2E)
       - name: Run E2E Tests
-        run: npm run e2e  # Assuming e2e tests are defined in your package.json
+        working-directory: ./e2e-tests
+        run: npm run test
 
   build-and-push-docker:
     name: Build and Push Docker Images
