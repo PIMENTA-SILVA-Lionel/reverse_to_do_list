@@ -15,7 +15,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js (for both backend and frontend)
+      # Step 2: Set up Node.js for Backend and Frontend
       - name: Set up Node.js for Backend
         uses: actions/setup-node@v3
         with:
@@ -26,7 +26,7 @@ jobs:
         with:
           node-version: '16'
 
-      # Step 3: Install dependencies for frontend and backend
+      # Step 3: Install dependencies for backend, frontend, and e2e tests
       - name: Install Backend Dependencies
         working-directory: ./backend
         run: npm install
@@ -35,11 +35,11 @@ jobs:
         working-directory: ./frontend
         run: npm install
 
-      - name: Install e2e Dependencies
+      - name: Install E2E Test Dependencies
         working-directory: ./e2e-tests
         run: npm install
 
-      # Step 4: Run Unit Tests for both backend and frontend
+      # Step 4: Run Unit Tests for Backend and Frontend
       - name: Run Backend Unit Tests
         working-directory: ./backend
         run: npm test
@@ -64,15 +64,19 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Log in to Docker Hub (public Docker repository)
+      # Step 2: Log in to Docker Hub (using secrets for better security)
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: "lionyti" #${{ secrets.DOCKER_USERNAME }}
-          password: "SXUV49t@Ust@u3J" #${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKER_USERNAME }}  # Use GitHub secrets for Docker username
+          password: ${{ secrets.DOCKER_PASSWORD }}  # Use GitHub secrets for Docker password
 
       # Step 3: Build Docker images using docker-compose
-      - name: Build and Push Docker Images
+      - name: Build Docker Images
         run: |
           docker-compose build
+
+      # Step 4: Push Docker images to Docker Hub
+      - name: Push Docker Images
+        run: |
           docker-compose push
