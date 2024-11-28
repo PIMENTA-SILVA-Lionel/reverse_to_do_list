@@ -76,17 +76,13 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Step 3: Force push dev to main
-      - name: Force push dev into main
-        run: |
-          git fetch origin main
-          git checkout dev
-          git push origin dev:main --force
-
-      # Step 4: Trigger the main workflow manually
-      - name: Trigger Main Workflow
-        uses: peter-evans/workflow-dispatch@v1
+      - name: Merge dev -> main
+        uses: devmasx/merge-branch@master
         with:
-          repository: ${{ github.repository }}
-          workflow: dev-to-main.yml  
-          ref: refs/heads/main
+          type: now
+          from_branch: dev
+          target_branch: main
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      
 
