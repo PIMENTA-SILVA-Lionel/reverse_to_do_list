@@ -1,10 +1,17 @@
 name: Build and Deploy your Docker Image to Docker Hub
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      DOCKER_USERNAME:
+        description: 'Docker Hub Username'
+        required: true
+      DOCKER_PASSWORD:
+        description: 'Docker Hub Password'
+        required: true
+      DOCKER_IMAGE_NAME:
+        description: 'Docker Image Name'
+        required: true
 
 jobs:
   build:
