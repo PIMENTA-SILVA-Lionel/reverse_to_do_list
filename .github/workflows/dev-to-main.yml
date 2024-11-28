@@ -15,18 +15,18 @@ jobs:
     steps:
       # Step 1: Checkout the code
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Step 2: Set up Node.js (for both backend and frontend)
       - name: Set up Node.js for Backend
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 20
 
       - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '22'
+          node-version: 20
 
       # Step 3: Install dependencies for frontend and backend
       - name: Install Backend Dependencies
