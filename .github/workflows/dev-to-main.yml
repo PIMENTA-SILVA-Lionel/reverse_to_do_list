@@ -1,17 +1,10 @@
 name: Build and Deploy your Docker Image to Docker Hub
 
 on:
-  workflow_dispatch:
-    inputs:
-      DOCKER_USERNAME:
-        description: 'Docker Hub Username'
-        required: true
-      DOCKER_PASSWORD:
-        description: 'Docker Hub Password'
-        required: true
-      DOCKER_IMAGE_NAME:
-        description: 'Docker Image Name'
-        required: true
+  workflow_run:
+    workflows: ["Build and Test on Dev Merge"]  # The name of the workflow that will trigger this one
+    types:
+      - completed
 
 jobs:
   build:
