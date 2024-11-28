@@ -82,7 +82,7 @@ jobs:
           type: now
           from_branch: dev
           target_branch: main
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.TOKEN }}
 
       
 
