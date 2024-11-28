@@ -25,6 +25,7 @@ services:
       - MONGO_URL=mongodb://mongodb:27017/reverse_todo
     networks:
       - app-network
+    image: lionyti/backend:latest
 
   frontend:
     build:
@@ -40,6 +41,7 @@ services:
       - backend
     networks:
       - app-network
+    image: lionyti/frontend:latest
 
 volumes:
   mongo-data:
