@@ -53,3 +53,8 @@ jobs:
       # Wait for the servers to start
       - name: Wait for services to be ready
         run: npx wait-on http://localhost:3000
+
+      # Run E2E tests
+      - name: Run E2E tests
+        working-directory: e2e-tests
+        run: npm test
