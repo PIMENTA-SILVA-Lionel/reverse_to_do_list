@@ -11,7 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
 
@@ -46,16 +45,16 @@ jobs:
 
       # Step 5: Run End-to-End Tests (E2E)
       - name: Install E2E Test Dependencies
-      working-directory: ./e2e-tests
-      run: npm install
+        working-directory: ./e2e-tests
+        run: npm install
 
       - name: Fix Mocha Permissions
-      working-directory: ./e2e-tests
-      run: chmod +x ./node_modules/.bin/mocha
+        working-directory: ./e2e-tests
+        run: chmod +x ./node_modules/.bin/mocha
 
       - name: Run E2E Tests
-      working-directory: ./e2e-tests
-      run: npx mocha test.js
+        working-directory: ./e2e-tests
+        run: npx mocha test.js
 
 
   build-and-push-docker:
