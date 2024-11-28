@@ -25,6 +25,13 @@ jobs:
         working-directory: frontend
         run: npm i
 
+      - name: Install packages in the e2e-tests
+        working-directory: e2e-tests
+        run: npm i
+
+      - name: Install mocha globally for E2E tests
+        run: npm i -g mocha
+
       # Run tests in the backend, frontend, and e2e-tests
       - name: Run tests in the backend
         working-directory: backend
@@ -46,6 +53,11 @@ jobs:
       # Wait for the servers to start
       - name: Wait for services to be ready
         run: npx wait-on http://localhost:3000
+
+      # Run E2E tests
+      - name: Run E2E tests
+        working-directory: e2e-tests
+        run: npm test
 
   merge-branch:
     name: Auto-Merge Dev into Main
@@ -70,7 +82,7 @@ jobs:
           type: now
           from_branch: dev
           target_branch: main
-          github_token: ${{ secrets.TOKEN }} 
+          github_token: ${{ secrets.TOKEN }}
 
       
 
