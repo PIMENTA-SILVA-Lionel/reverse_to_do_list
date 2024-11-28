@@ -84,12 +84,12 @@ jobs:
           target_branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
       
-      - name: Trigger the main workflow
-        uses: peter-evans/workflow-dispatch@v1
-        with:
-          repository: ${{ github.repository }}
-          workflow: dev-to-main.yml  # The name of your main workflow file
-          ref: refs/heads/main
+      - name: Trigger the main workflow manually
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -d '{"ref": "refs/heads/main"}' \
+            https://api.github.com/repos/${{ github.repository }}/actions/workflows/main.yml/dispatches
 
       
 
