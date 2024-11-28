@@ -6,6 +6,12 @@ on:
       - main  # Trigger when changes are pushed to the main branch
 name: Build and Deploy your Docker Image to Docker Hub
 
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
