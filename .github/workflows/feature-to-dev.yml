@@ -87,7 +87,7 @@ jobs:
       - name: Trigger the main workflow manually
         run: |
           curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token ${{ secrets.TOKEN }}" \
             -d '{"ref": "refs/heads/main"}' \
             https://api.github.com/repos/${{ github.repository }}/actions/workflows/main.yml/dispatches
 
