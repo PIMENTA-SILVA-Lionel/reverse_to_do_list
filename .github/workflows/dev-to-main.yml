@@ -1,10 +1,10 @@
 name: Build and Deploy your Docker Image to Docker Hub
 ##
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["Build and Test on Dev Merge"]  # The name of the workflow that will trigger this one
+    types:
+      - completed
 
 jobs:
   build:
