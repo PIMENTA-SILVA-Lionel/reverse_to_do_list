@@ -2,7 +2,7 @@ name: Build and Test on Dev Merge
 
 on:
   push:
-    branches: [ "dev"] # Triggered when there is a push in dev branch
+    branches: ["dev"] # Triggered when there is a push in dev branch
 
 jobs:
   build-and-test:
@@ -83,6 +83,13 @@ jobs:
           from_branch: dev
           target_branch: main
           github_token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Trigger the main workflow
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          repository: ${{ github.repository }}
+          workflow: dev-to-main.yml  # The name of your main workflow file
+          ref: refs/heads/main
 
       
 
