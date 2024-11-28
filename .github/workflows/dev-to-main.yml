@@ -11,30 +11,30 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Step 2: Set up Node.js for Backend and Frontend
-      - name: Set up Node.js for Backend
+      # Step 2: Set up Node.js for Backend, Frontend, and E2E tests
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16'
-
-      # Step 3: Install dependencies for backend, frontend, and e2e tests
+      # Step 3: Install dependencies
       - name: Install Backend Dependencies
         working-directory: ./backend
-        run: npm install
+        run: npm ci
 
       - name: Install Frontend Dependencies
         working-directory: ./frontend
-        run: npm install        
+        run: npm ci
 
-      # Step 4: Run Unit Tests for Backend and Frontend
+      - name: Install E2E Test Dependencies
+        working-directory: ./e2e-tests
+        run: npm ci
+
+      # Step 4: Run Unit Tests
       - name: Run Backend Unit Tests
         working-directory: ./backend
         run: npm test
@@ -44,9 +44,14 @@ jobs:
         run: npm test
 
       # Step 5: Run End-to-End Tests (E2E)
-      - name: Install E2E Test Dependencies
-        working-directory: ./e2e-tests
-        run: npm install
+      - name: Set Up Firefox and GeckoDriver
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y firefox
+          wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz
+          tar -xvzf geckodriver-v0.33.0-linux64.tar.gz
+          sudo mv geckodriver /usr/local/bin/
+          chmod +x /usr/local/bin/geckodriver
 
       - name: Fix Mocha Permissions
         working-directory: ./e2e-tests
@@ -54,8 +59,9 @@ jobs:
 
       - name: Run E2E Tests
         working-directory: ./e2e-tests
+        env:
+          CI: true
         run: npx mocha test.js
-
 
   build-and-push-docker:
     name: Build and Push Docker Images
@@ -77,10 +83,8 @@ jobs:
 
       # Step 3: Build Docker images using docker-compose
       - name: Build Docker Images
-        run: |
-          docker-compose build
+        run: docker-compose build
 
       # Step 4: Push Docker images to Docker Hub
       - name: Push Docker Images
-        run: |
-          docker-compose push
+        run: docker-compose push
