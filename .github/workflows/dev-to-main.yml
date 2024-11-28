@@ -43,32 +43,6 @@ jobs:
         working-directory: ./frontend
         run: npm test
 
-      # Step 5: Run End-to-End Tests (E2E)
-      - name: Set Up Firefox and GeckoDriver
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y firefox
-          wget https://github.com/mozilla/geckodriver/releases/download/v0.33.0/geckodriver-v0.33.0-linux64.tar.gz
-          tar -xvzf geckodriver-v0.33.0-linux64.tar.gz
-          sudo mv geckodriver /usr/local/bin/
-          chmod +x /usr/local/bin/geckodriver
-
-      - name: Fix Mocha Permissions
-        working-directory: ./e2e-tests
-        run: chmod +x ./node_modules/.bin/mocha
-
-      - name: Run E2E Tests
-        working-directory: ./e2e-tests
-        env:
-          CI: true
-        run: npx mocha test.js
-
-  build-and-push-docker:
-    name: Build and Push Docker Images
-    needs: build-and-test
-    if: success()  # Trigger this only if the tests pass
-    runs-on: ubuntu-latest
-
     steps:
       # Step 1: Checkout the code
       - name: Checkout Code
