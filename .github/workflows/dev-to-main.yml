@@ -36,6 +36,13 @@ jobs:
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
+      
+      - name: Install packages in the e2e-tests
+        working-directory: e2e-tests
+        run: npm i
+
+      - name: Install mocha globally for E2E tests
+        run: npm i -g mocha
 
       # Step 4: Run Unit Tests for both backend and frontend
       - name: Run Backend Unit Tests
@@ -44,6 +51,11 @@ jobs:
 
       - name: Run Frontend Unit Tests
         working-directory: ./frontend
+        run: npm test
+      
+      # Run E2E tests
+      - name: Run E2E tests
+        working-directory: e2e-tests
         run: npm test
       
 
