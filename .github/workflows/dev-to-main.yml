@@ -1,10 +1,10 @@
-name: Build and Deploy your Docker Image to Docker Hub
+name: Dev to Main CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches:
+      - main  # Trigger when changes are pushed to the main branch
+name: Build and Deploy your Docker Image to Docker Hub
 
 jobs:
   build:
