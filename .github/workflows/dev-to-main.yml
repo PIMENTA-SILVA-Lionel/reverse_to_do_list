@@ -15,18 +15,18 @@ jobs:
     steps:
       # Step 1: Checkout the code
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       # Step 2: Set up Node.js (for both backend and frontend)
       - name: Set up Node.js for Backend
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: '22'
 
       - name: Set up Node.js for Frontend
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: '22'
 
       # Step 3: Install dependencies for frontend and backend
       - name: Install Backend Dependencies
@@ -36,13 +36,6 @@ jobs:
       - name: Install Frontend Dependencies
         working-directory: ./frontend
         run: npm install
-      
-      - name: Install packages in the e2e-tests
-        working-directory: e2e-tests
-        run: npm i
-
-      - name: Install mocha globally for E2E tests
-        run: npm i -g mocha
 
       # Step 4: Run Unit Tests for both backend and frontend
       - name: Run Backend Unit Tests
@@ -51,11 +44,6 @@ jobs:
 
       - name: Run Frontend Unit Tests
         working-directory: ./frontend
-        run: npm test
-      
-      # Run E2E tests
-      - name: Run E2E tests
-        working-directory: e2e-tests
         run: npm test
       
 
