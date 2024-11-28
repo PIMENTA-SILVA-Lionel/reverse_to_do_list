@@ -2,7 +2,7 @@ name: Build and Test on Dev Merge
 
 on:
   push:
-    branches: [ "dev", "main" ] # Triggered when there is a push in dev branch
+    branches: [ "dev"] # Triggered when there is a push in dev branch
 
 jobs:
   build-and-test:
