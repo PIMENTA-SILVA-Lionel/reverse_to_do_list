@@ -43,7 +43,6 @@ jobs:
         working-directory: ./frontend
         run: npm test
 
-    steps:
       # Step 1: Checkout the code
       - name: Checkout Code
         uses: actions/checkout@v3
